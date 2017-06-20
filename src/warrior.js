@@ -1,7 +1,7 @@
 /**
- * The ball the players have to catch
+ * The warrior the player moves
  */
-class Car {
+class Warrior {
 
     constructor(x, y, graphics, radius = CAR_RADIUS, speed = CAR_START_SPEED, angle = CAR_START_ANGLE) {
         this.x = x;

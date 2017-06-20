@@ -56,7 +56,7 @@ function loadGame() {
     tracks = [];
     loadTracks(graphics);
     // Data
-    car = new Car(carStartX, carStartY, graphics);
+    car = new Warrior(carStartX, carStartY, graphics);
 }
 
 /**
@@ -69,7 +69,7 @@ function loadTracks(graphics) {
     for (let i = 0; i < TRACK_ROWS; i++) { // Rows
         for (let j = 0; j < TRACK_COLS; j++) { // Columns
             // Terrain generation
-            let newTrack = new Track(trackLeftEdgeX, trackTopEdgeY, TRACKGRID[trackIndex], graphics);
+            let newTrack = new World(trackLeftEdgeX, trackTopEdgeY, TRACKGRID[trackIndex], graphics);
             tracks.push(newTrack);
             // Car start
             if (TRACKGRID[trackIndex] == TRACK_START_P1_CODE) {

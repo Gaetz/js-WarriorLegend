@@ -1,7 +1,7 @@
 /**
- * Breakable Brick
+ * Dungeon world
  */
-class Track {
+class World {
 
     constructor(x, y, code, graphics, width = TRACK_WIDTH, height = TRACK_HEIGHT) {
         this.x = x;
