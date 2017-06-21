@@ -6,6 +6,8 @@ class Warrior {
     constructor(x, y, graphics, radius = PLAYER_RADIUS, speed = START_SPEED, angle = START_ANGLE) {
         this.x = x;
         this.y = y;
+        this.nextX = x;
+        this.nextY = y;
         this.radius = radius;
         this.speed = speed;
         this.angle = angle;
@@ -17,14 +19,14 @@ class Warrior {
      * Return player's next horizontal position
      */
     getNextX() {
-        return this.x + Math.cos(this.angle) * this.speed;
+        return this.nextX;
     }
 
     /**
      * Return player's next vertival position
      */
     getNextY() {
-        return this.y + Math.sin(this.angle) * this.speed;
+        return this.nextY;
     }
 
     /**
@@ -32,37 +34,46 @@ class Warrior {
      * @param {*} canvas 
      * @param {*} input 
      */
-    update(canvas, input) {
-        // Input controls
-        if (this.outOfControlTimer > 0) {
-            this.outOfControlTimer = this.outOfControlTimer - 1;
-        } else {
-            if (input.isUpInput(this)) {
-                this.speed = this.speed + PLAYER_ACCELERATION;
-            }
-            if (input.isDownInput(this)) {
-                this.speed = this.speed - PLAYER_BRAKE;
-            }
-            if (input.isLeftInput(this) && Math.abs(this.speed) > MIN_TURN_SPEED) {
-                this.angle = this.angle - PLAYER_ROTATION_SPEED;
-            }
-            if (input.isRightInput(this) && Math.abs(this.speed) > MIN_TURN_SPEED) {
-                this.angle = this.angle + PLAYER_ROTATION_SPEED;
-            }
+    update(input, world) {
+        this.nextX = this.x;
+        this.nextY = this.y;
+
+        if (input.isUpInput(this)) {
+            this.nextY = this.nextY - PLAYER_MOVE_SPEED;
         }
-        // Move
-        this.x = this.x + Math.cos(this.angle) * this.speed;
-        this.y = this.y + Math.sin(this.angle) * this.speed;
-        // Automatic deceleration
-        if (Math.abs(this.speed) > MIN_SPEED)
-            this.speed = this.speed * GROUNDSPEED_DECAY_MULT;
-        else
-            this.speed = 0;
-        // Wall bounce
-        if (this.y <= 0 || this.y >= canvas.height)
-            this.speed *= -1;
-        if (this.x >= canvas.width || this.x <= 0)
-            this.speed *= -1;
+        if (input.isDownInput(this)) {
+            this.nextY = this.nextY + PLAYER_MOVE_SPEED;
+        }
+        if (input.isLeftInput(this)) {
+            this.nextX = this.nextX - PLAYER_MOVE_SPEED;
+        }
+        if (input.isRightInput(this)) {
+            this.nextX = this.nextX + PLAYER_MOVE_SPEED;
+        }
+
+        // Move if movement is valid
+        if (this.isMovementValid(world)) {
+            this.x = this.nextX;
+            this.y = this.nextY;
+        }
+    }
+
+    /**
+     * Handle player colliding with world
+     */
+    isMovementValid(world) {
+        // Get next position
+        let nextTileRow = Math.floor(this.nextY / TILE_HEIGHT);
+        let nextTileCol = Math.floor(this.nextX / TILE_WIDTH);
+        // Track col and row must be in config limit
+        if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
+            return false;
+        // Collision
+        let collidedTrack = world.getTileFromColAndRow(nextTileRow, nextTileCol);
+        if (collidedTrack.code == TILE_WALL_CODE) {
+            return false;
+        }
+        return true;
     }
 
     /**

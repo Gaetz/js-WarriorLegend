@@ -11,12 +11,7 @@ const START_X_OFFSET = 18;
 const START_SPEED = 0;
 const START_ANGLE = - Math.PI / 2;
 const PLAYER_RADIUS = 10;
-const PLAYER_ACCELERATION = 0.5;
-const PLAYER_BRAKE = 0.3;
-const PLAYER_ROTATION_SPEED = 0.03 * Math.PI;
-const GROUNDSPEED_DECAY_MULT = 0.94;
-const MIN_TURN_SPEED = 0.5; // Minimum speed to turn
-const MIN_SPEED = 0.1; // Minimum speed the player can go
+const PLAYER_MOVE_SPEED = 3.0;
 const BOUNCE_TIMER = 15;
 const PLAYER_GRAPHICS = 'images/car.png';
 

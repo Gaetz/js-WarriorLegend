@@ -1,5 +1,5 @@
 let canvas, canvasContext, input, graphics;
-let player, playerStartX, playerStartY, tiles, background;
+let player, playerStartX, playerStartY, world, background;
 
 /**
  * Game start
@@ -52,36 +52,11 @@ function loadTools() {
  * Loading game elements 
  * */
 function loadGame() {
-    // Track
-    tiles = [];
-    loadWorld(graphics);
+    // World
+    world = new World(graphics);
+    world.load();
     // Data
     player = new Warrior(playerStartX, playerStartY, graphics);
-}
-
-/**
- * Load all world tiles
- */
-function loadWorld(graphics) {
-    let tileLeftEdgeX = 0;
-    let tileTopEdgeY = 0;
-    let tileIndex = 0;
-    for (let i = 0; i < TILE_ROWS; i++) { // Rows
-        for (let j = 0; j < TILE_COLS; j++) { // Columns
-            // Terrain generation
-            let tile = new WorldTile(tileLeftEdgeX, tileTopEdgeY, WORLDGRID[tileIndex], graphics);
-            tiles.push(tile);
-            // Player start
-            if (WORLDGRID[tileIndex] == TILE_START_P1_CODE) {
-                playerStartX = tileLeftEdgeX + START_X_OFFSET;
-                playerStartY = tileTopEdgeY;
-            }
-            // For next iteration
-            tileLeftEdgeX = (tileLeftEdgeX + TILE_WIDTH) % (TILE_COLS * TILE_WIDTH);
-            tileIndex = tileIndex + 1;
-        }
-        tileTopEdgeY = (tileTopEdgeY + TILE_HEIGHT) % (TILE_ROWS * TILE_HEIGHT);
-    }
 }
 
 /**
@@ -104,40 +79,12 @@ function keyReleased(e) {
  * Update loop
  */
 function update() {
-    player.update(canvas, input);
-    // Player bouncing on walls
-    updatePlayerCollision(player);
+    player.update(input, world);
     // End game reset
     if (isGoalReach(player)) {
         document.getElementById('debugText').innerHTML = "Player one WON !";
         resetGame();
     }
-}
-
-/**
- * Handle player colliding with tracks
- */
-function updatePlayerCollision(checkedElement) {
-    // Get checkedElement's next position
-    let nextTileRow = Math.floor(checkedElement.getNextY() / TILE_HEIGHT);
-    let nextTileCol = Math.floor(checkedElement.getNextX() / TILE_WIDTH);
-    // Track col and row must be in config limit
-    if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
-        return;
-    // Collision
-    let collidedTrack = getTileFromColAndRow(nextTileRow, nextTileCol);
-    if (collidedTrack.code == TILE_WALL_CODE) {
-        checkedElement.trackBounce();
-    }
-}
-
-/**
- * Get track index from row and col
- * @param {int} tileRow 
- * @param {int} tileCol 
- */
-function getTileFromColAndRow(tileRow, tileCol) {
-    return tiles[tileRow * TILE_COLS + tileCol];
 }
 
 
@@ -149,7 +96,7 @@ function isGoalReach(checkedElement) {
     let tileRow = Math.floor(checkedElement.y / TILE_HEIGHT);
     let trackCol = Math.floor(checkedElement.x / TILE_WIDTH);
     // Check if goal is reach
-    let currentTile = getTileFromColAndRow(tileRow, trackCol);
+    let currentTile = world.getTileFromColAndRow(tileRow, trackCol);
     return currentTile.code == TILE_GOAL_CODE;
 }
 
@@ -158,8 +105,7 @@ function isGoalReach(checkedElement) {
  */
 function resetGame() {
     player.reset(playerStartX, playerStartY, false, graphics);
-    tiles = [];
-    loadWorld(graphics);
+    world.reset();
 }
 
 
@@ -168,8 +114,6 @@ function resetGame() {
  */
 function draw() {
     background.draw(canvasContext);
-    for (let j = 0; j < tiles.length; j++) {
-        tiles[j].draw();
-    }
+    world.draw();
     player.draw();
 }
