@@ -89,7 +89,7 @@ function loadWorld(graphics) {
  * @param {*} e Event
  */
 function keyPressed(e) {
-    setKeyHoldState(e.keyCode, true);
+    input.setKeyHoldState(e.keyCode, true);
 }
 
 /**
@@ -97,28 +97,7 @@ function keyPressed(e) {
  * @param {*} e Event
  */
 function keyReleased(e) {
-    setKeyHoldState(e.keyCode, false);
-}
-
-/**
- * Tell Input if a virtual key is hold
- * @param {*} keyCode Which key is hold
- * @param {*} setTo Input will be set this value
- */
-function setKeyHoldState(keyCode, setTo) {
-    // Player 1
-    if (keyCode == Z_CODE || keyCode == UP_CODE) {
-        input.isPressedUp = setTo;
-    }
-    if (keyCode == Q_CODE || keyCode == LEFT_CODE) {
-        input.isPressedLeft = setTo;
-    }
-    if (keyCode == D_CODE || keyCode == RIGHT_CODE) {
-        input.isPressedRight = setTo;
-    }
-    if (keyCode == S_CODE || keyCode == DOWN_CODE) {
-        input.isPressedDown = setTo;
-    }
+    input.setKeyHoldState(e.keyCode, false);
 }
 
 /**
