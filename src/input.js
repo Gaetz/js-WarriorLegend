@@ -10,35 +10,31 @@ class Input {
     }
 
     /**
-     * Get up input in function of asking car
-     * @param {Car} car 
+     * Get up input
      */
-    isUpInput(car) {
+    isUpInput() {
         return this.isPressedUp;
     }
 
 
     /**
-     * Get up input in function of asking car
-     * @param {Car} car 
+     * Get up input
      */
-    isDownInput(car) {
+    isDownInput() {
         return this.isPressedDown;
     }
 
     /**
-     * Get left input in function of asking car
-     * @param {Car} car 
+     * Get left input
      */
-    isLeftInput(car) {
+    isLeftInput() {
         return this.isPressedLeft;
     }
 
     /**
-     * Get right input in function of asking car
-     * @param {Car} car 
+     * Get right input
      */
-    isRightInput(car) {
+    isRightInput() {
         return this.isPressedRight;
     }
 }

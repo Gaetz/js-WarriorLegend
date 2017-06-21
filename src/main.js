@@ -1,5 +1,5 @@
 let canvas, canvasContext, input, graphics;
-let car, carStartX, carStartY, tracks, background;
+let player, playerStartX, playerStartY, tiles, background;
 
 /**
  * Game start
@@ -53,34 +53,34 @@ function loadTools() {
  * */
 function loadGame() {
     // Track
-    tracks = [];
-    loadTracks(graphics);
+    tiles = [];
+    loadWorld(graphics);
     // Data
-    car = new Warrior(carStartX, carStartY, graphics);
+    player = new Warrior(playerStartX, playerStartY, graphics);
 }
 
 /**
- * Load all tracks
+ * Load all world tiles
  */
-function loadTracks(graphics) {
-    let trackLeftEdgeX = 0;
-    let trackTopEdgeY = 0;
-    let trackIndex = 0;
-    for (let i = 0; i < TRACK_ROWS; i++) { // Rows
-        for (let j = 0; j < TRACK_COLS; j++) { // Columns
+function loadWorld(graphics) {
+    let tileLeftEdgeX = 0;
+    let tileTopEdgeY = 0;
+    let tileIndex = 0;
+    for (let i = 0; i < TILE_ROWS; i++) { // Rows
+        for (let j = 0; j < TILE_COLS; j++) { // Columns
             // Terrain generation
-            let newTrack = new World(trackLeftEdgeX, trackTopEdgeY, TRACKGRID[trackIndex], graphics);
-            tracks.push(newTrack);
-            // Car start
-            if (TRACKGRID[trackIndex] == TRACK_START_P1_CODE) {
-                carStartX = trackLeftEdgeX + CAR_START_X_OFFSET;
-                carStartY = trackTopEdgeY;
+            let tile = new WorldTile(tileLeftEdgeX, tileTopEdgeY, WORLDGRID[tileIndex], graphics);
+            tiles.push(tile);
+            // Player start
+            if (WORLDGRID[tileIndex] == TILE_START_P1_CODE) {
+                playerStartX = tileLeftEdgeX + START_X_OFFSET;
+                playerStartY = tileTopEdgeY;
             }
             // For next iteration
-            trackLeftEdgeX = (trackLeftEdgeX + TRACK_WIDTH) % (TRACK_COLS * TRACK_WIDTH);
-            trackIndex = trackIndex + 1;
+            tileLeftEdgeX = (tileLeftEdgeX + TILE_WIDTH) % (TILE_COLS * TILE_WIDTH);
+            tileIndex = tileIndex + 1;
         }
-        trackTopEdgeY = (trackTopEdgeY + TRACK_HEIGHT) % (TRACK_ROWS * TRACK_HEIGHT);
+        tileTopEdgeY = (tileTopEdgeY + TILE_HEIGHT) % (TILE_ROWS * TILE_HEIGHT);
     }
 }
 
@@ -125,62 +125,62 @@ function setKeyHoldState(keyCode, setTo) {
  * Update loop
  */
 function update() {
-    car.update(canvas, input);
-    // Car bouncing on track
-    updateCarCollision(car);
+    player.update(canvas, input);
+    // Player bouncing on walls
+    updatePlayerCollision(player);
     // End game reset
-    if (isGoalReach(car)) {
+    if (isGoalReach(player)) {
         document.getElementById('debugText').innerHTML = "Player one WON !";
         resetGame();
     }
 }
 
 /**
- * Handle car colliding with tracks
+ * Handle player colliding with tracks
  */
-function updateCarCollision(checkedCar) {
-    // Get checkedCar's next position
-    let nextTrackRow = Math.floor(checkedCar.getNextY() / TRACK_HEIGHT);
-    let nextTrackCol = Math.floor(checkedCar.getNextX() / TRACK_WIDTH);
+function updatePlayerCollision(checkedElement) {
+    // Get checkedElement's next position
+    let nextTileRow = Math.floor(checkedElement.getNextY() / TILE_HEIGHT);
+    let nextTileCol = Math.floor(checkedElement.getNextX() / TILE_WIDTH);
     // Track col and row must be in config limit
-    if (nextTrackCol < 0 || nextTrackRow < 0 || nextTrackRow >= TRACK_ROWS || nextTrackCol >= TRACK_COLS)
+    if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
         return;
     // Collision
-    let collidedTrack = getTrackFromColAndRow(nextTrackRow, nextTrackCol);
-    if (collidedTrack.code == TRACK_WALL_CODE) {
-        checkedCar.trackBounce();
+    let collidedTrack = getTileFromColAndRow(nextTileRow, nextTileCol);
+    if (collidedTrack.code == TILE_WALL_CODE) {
+        checkedElement.trackBounce();
     }
 }
 
 /**
  * Get track index from row and col
- * @param {int} trackRow 
- * @param {int} trackCol 
+ * @param {int} tileRow 
+ * @param {int} tileCol 
  */
-function getTrackFromColAndRow(trackRow, trackCol) {
-    return tracks[trackRow * TRACK_COLS + trackCol];
+function getTileFromColAndRow(tileRow, tileCol) {
+    return tiles[tileRow * TILE_COLS + tileCol];
 }
 
 
 /**
- * Returns true when car reach track end
+ * Returns true when player reach track end
  */
-function isGoalReach(checkedCar) {
-    // Get checkedCar's position
-    let nextTrackRow = Math.floor(checkedCar.y / TRACK_HEIGHT);
-    let nextTrackCol = Math.floor(checkedCar.x / TRACK_WIDTH);
+function isGoalReach(checkedElement) {
+    // Get checkedElement's position
+    let tileRow = Math.floor(checkedElement.y / TILE_HEIGHT);
+    let trackCol = Math.floor(checkedElement.x / TILE_WIDTH);
     // Check if goal is reach
-    let currentTrack = getTrackFromColAndRow(nextTrackRow, nextTrackCol);
-    return currentTrack.code == TRACK_GOAL_CODE;
+    let currentTile = getTileFromColAndRow(tileRow, trackCol);
+    return currentTile.code == TILE_GOAL_CODE;
 }
 
 /**
  * Reset game
  */
 function resetGame() {
-    car.reset(carStartX, carStartY, false, graphics);
-    tracks = [];
-    loadTracks(graphics);
+    player.reset(playerStartX, playerStartY, false, graphics);
+    tiles = [];
+    loadWorld(graphics);
 }
 
 
@@ -189,8 +189,8 @@ function resetGame() {
  */
 function draw() {
     background.draw(canvasContext);
-    for (let j = 0; j < tracks.length; j++) {
-        tracks[j].draw();
+    for (let j = 0; j < tiles.length; j++) {
+        tiles[j].draw();
     }
-    car.draw();
+    player.draw();
 }

@@ -1,9 +1,9 @@
 /**
- * Dungeon world
+ * Dungeon world tile
  */
-class World {
+class WorldTile {
 
-    constructor(x, y, code, graphics, width = TRACK_WIDTH, height = TRACK_HEIGHT) {
+    constructor(x, y, code, graphics, width = TILE_WIDTH, height = TILE_HEIGHT) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -14,17 +14,17 @@ class World {
 
     loadPic(code, graphics) {
         switch (code) {
-            case TRACK_ROAD_CODE:
+            case TILE_ROAD_CODE:
                 return graphics.get('road');
-            case TRACK_WALL_CODE:
+            case TILE_WALL_CODE:
                 return graphics.get('wall');
-            case TRACK_START_P1_CODE:
+            case TILE_START_P1_CODE:
                 return graphics.get('road');
-            case TRACK_GOAL_CODE:
+            case TILE_GOAL_CODE:
                 return graphics.get('goal');
-            case TRACK_FLAG_CODE:
+            case TILE_FLAG_CODE:
                 return graphics.get('flag');
-            case TRACK_GRASS_CODE:
+            case TILE_GRASS_CODE:
                 return graphics.get('grass');
         }
     }
