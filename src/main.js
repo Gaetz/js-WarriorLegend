@@ -87,7 +87,6 @@ function update() {
     }
 }
 
-
 /**
  * Returns true when player reach track end
  */
