@@ -14,7 +14,7 @@ const PLAYER_RADIUS = 10;
 const PLAYER_MOVE_SPEED = 3.0;
 const GROUNDSPEED_DECAY_MULT = 0.94;
 const BOUNCE_TIMER = 15;
-const PLAYER_GRAPHICS = 'images/car.png';
+const PLAYER_GRAPHICS = 'images/warrior.png';
 
 // Tiles
 const TILE_WIDTH = 50;
@@ -40,18 +40,18 @@ const LEFT_CODE = 37;
 const RIGHT_CODE = 39;
 
 // Grid
-const TILE_ROAD_CODE = 0;
+const TILE_FLOOR_CODE = 0;
 const TILE_WALL_CODE = 1;
 const TILE_START_P1_CODE = 2;
 const TILE_GOAL_CODE = 3;
-const TILE_FLAG_CODE = 4;
-const TILE_GRASS_CODE = 5;
-const TILE_ROAD_IMG = 'images/road.png';
+const TILE_KEY_CODE = 4;
+const TILE_DOOR_CODE = 5;
+const TILE_FLOOR_IMG = 'images/floor.png';
 const TILE_WALL_IMG = 'images/block.png';
-const TILE_START_P1_IMG = 'images/road.png';
-const TILE_GOAL_IMG = 'images/flag.png';
-const TILE_FLAG_IMG = 'images/turn.png';
-const TILE_GRASS_IMG = 'images/grass.png';
+const TILE_START_P1_IMG = 'images/floor.png';
+const TILE_GOAL_IMG = 'images/goal.png';
+const TILE_KEY_IMG = 'images/key.png';
+const TILE_DOOR_IMG = 'images/door.png';
 
 const WORLDGRID =
        [5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5,

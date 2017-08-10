@@ -7,12 +7,12 @@ class Graphics {
         this.picCounter = 0;
         this.resources = new Map();
         let loader = [
-            { name: 'car', src: PLAYER_GRAPHICS },
-            { name: 'road', src: TILE_ROAD_IMG },
+            { name: 'warrior', src: PLAYER_GRAPHICS },
+            { name: 'floor', src: TILE_FLOOR_IMG },
             { name: 'wall', src: TILE_WALL_IMG },
             { name: 'goal', src: TILE_GOAL_IMG },
-            { name: 'flag', src: TILE_FLAG_IMG },
-            { name: 'grass', src: TILE_GRASS_IMG }
+            { name: 'key', src: TILE_KEY_IMG },
+            { name: 'door', src: TILE_DOOR_IMG }
         ];
         for (let i = 0; i < loader.length; i++) {
             this.picCounter = this.picCounter + 1;

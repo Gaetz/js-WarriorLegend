@@ -14,18 +14,18 @@ class WorldTile {
 
     loadPic(code, graphics) {
         switch (code) {
-            case TILE_ROAD_CODE:
-                return graphics.get('road');
+            case TILE_FLOOR_CODE:
+                return graphics.get('floor');
             case TILE_WALL_CODE:
                 return graphics.get('wall');
             case TILE_START_P1_CODE:
-                return graphics.get('road');
+                return graphics.get('floor');
             case TILE_GOAL_CODE:
                 return graphics.get('goal');
-            case TILE_FLAG_CODE:
-                return graphics.get('flag');
-            case TILE_GRASS_CODE:
-                return graphics.get('grass');
+            case TILE_KEY_CODE:
+                return graphics.get('key');
+            case TILE_DOOR_CODE:
+                return graphics.get('door');
         }
     }
 

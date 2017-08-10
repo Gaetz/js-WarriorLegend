@@ -10,7 +10,7 @@ class Warrior {
         this.nextY = y;
         this.radius = radius;
         // Load player image
-        this.pic = graphics.get('car');
+        this.pic = graphics.get('warrior');
     }
 
     /**
@@ -52,7 +52,7 @@ class Warrior {
             return true;
         // Allowed tiles
         let collidedTrack = this.getTileFromColAndRow(nextTileRow, nextTileCol, tiles);
-        if (collidedTrack.code == TILE_ROAD_CODE || collidedTrack.code == TILE_GOAL_CODE) {
+        if (collidedTrack.code == TILE_FLOOR_CODE || collidedTrack.code == TILE_GOAL_CODE) {
             return false;
         }
         // Else collision
