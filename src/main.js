@@ -82,7 +82,7 @@ function update() {
     player.update(input, world);
     // End game reset
     if (isGoalReach(player)) {
-        document.getElementById('debugText').innerHTML = "Player one WON !";
+        document.getElementById('debugText').innerHTML = "Player WON !";
         resetGame();
     }
 }

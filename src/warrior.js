@@ -128,7 +128,7 @@ class Warrior {
      * Draw
      */
     draw() {
-        Graphics.drawBitmapWithRotation(this.pic, this.x, this.y, this.angle);
+        Graphics.drawBitmapCentered(this.pic, this.x, this.y);
     }
 
     /**

@@ -43,10 +43,9 @@ class Graphics {
         canvasContext.restore();
     }
 
-    static drawBitmapWithRotation(graphics, x, y, angle) {
+    static drawBitmapCentered(graphics, x, y) {
         canvasContext.save();
         canvasContext.translate(x, y);
-        canvasContext.rotate(angle);
         canvasContext.drawImage(graphics, - graphics.width / 2, - graphics.height / 2);
         canvasContext.restore();
     }
