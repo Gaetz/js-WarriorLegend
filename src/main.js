@@ -88,14 +88,14 @@ function update() {
 }
 
 /**
- * Returns true when player reach track end
+ * Returns true when player reach world end
  */
 function isGoalReach(checkedElement) {
     // Get checkedElement's position
-    let tileRow = Math.floor(checkedElement.y / TILE_HEIGHT);
-    let trackCol = Math.floor(checkedElement.x / TILE_WIDTH);
+    let row = Math.floor(checkedElement.y / TILE_HEIGHT);
+    let col = Math.floor(checkedElement.x / TILE_WIDTH);
     // Check if goal is reach
-    let currentTile = world.getTileFromColAndRow(tileRow, trackCol);
+    let currentTile = world.getTileFromColAndRow(row, col);
     return currentTile.code == TILE_GOAL_CODE;
 }
 
@@ -113,6 +113,6 @@ function resetGame() {
  */
 function draw() {
     background.draw(canvasContext);
-    world.draw();
+    world.draw(graphics);
     player.draw();
 }

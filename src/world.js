@@ -44,12 +44,21 @@ class World {
     /**
      * Draw world
      */
-    draw() {
+    draw(graphics) {
+        // World draw
         for (let i = 0; i < this.tiles.length; i++) {
+            // Draw floor under tile if necessary
+            if(this.isTileTransparent(this.tiles[i])) {
+                Graphics.drawBitmap(graphics.get('floor'), this.tiles[i].x, this.tiles[i].y)
+            }
+            // Draw tile
             this.tiles[i].draw();
         }
     }
 
+    isTileTransparent(tile) {
+        return tile.code == TILE_DOOR_CODE || tile.code == TILE_GOAL_CODE || tile.code == TILE_KEY_CODE;
+    }
 
     /**
      * Get tile index from row and col

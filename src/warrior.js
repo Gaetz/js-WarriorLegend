@@ -47,12 +47,12 @@ class Warrior {
         // Get player's next position
         let nextTileRow = Math.floor(this.nextY / TILE_HEIGHT);
         let nextTileCol = Math.floor(this.nextX / TILE_WIDTH);
-        // Track col and row must be in config limit
+        // Col and row must be in config limit
         if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
             return true;
         // Allowed tiles
-        let collidedTrack = this.getTileFromColAndRow(nextTileRow, nextTileCol, tiles);
-        if (collidedTrack.code == TILE_FLOOR_CODE || collidedTrack.code == TILE_GOAL_CODE) {
+        let collidedTile = this.getTileFromColAndRow(nextTileRow, nextTileCol, tiles);
+        if (collidedTile.code == TILE_FLOOR_CODE || collidedTile.code == TILE_GOAL_CODE) {
             return false;
         }
         // Else collision
@@ -60,7 +60,7 @@ class Warrior {
     }
 
     /**
-     * Get track index from row and col
+     * Get tile index from row and col
      * @param {int} tileRow 
      * @param {int} tileCol 
      * @param {*} tiles
@@ -97,12 +97,12 @@ class Warrior {
         // Get next position
         let nextTileRow = Math.floor(this.nextY / TILE_HEIGHT);
         let nextTileCol = Math.floor(this.nextX / TILE_WIDTH);
-        // Track col and row must be in config limit
+        // Col and row must be in config limit
         if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
             return false;
         // Collision
-        let collidedTrack = world.getTileFromColAndRow(nextTileRow, nextTileCol);
-        if (collidedTrack.code == TILE_WALL_CODE) {
+        let collidedTile = world.getTileFromColAndRow(nextTileRow, nextTileCol);
+        if (collidedTile.code == TILE_WALL_CODE) {
             return false;
         }
         return true;
@@ -132,7 +132,7 @@ class Warrior {
     }
 
     /**
-     * Reset ball position and speed
+     * Reset player position and speed
      */
     reset(startX, startY) {
         this.x = startX;
