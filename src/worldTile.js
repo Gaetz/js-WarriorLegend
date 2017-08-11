@@ -32,4 +32,9 @@ class WorldTile {
     draw() {
         Graphics.drawBitmap(this.pic, this.x, this.y);
     }
+
+    becomeFloor() {
+        this.pic = graphics.get('floor');
+        this.code = TILE_FLOOR_CODE;
+    }
 }

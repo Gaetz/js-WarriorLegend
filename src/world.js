@@ -68,4 +68,22 @@ class World {
     getTileFromColAndRow(tileRow, tileCol) {
         return this.tiles[tileRow * TILE_COLS + tileCol];
     }
+
+    /**
+     * Make the key a floor tile
+     * @param {int} tileRow 
+     * @param {int} tileCol 
+     */
+    collectKey(tile) {
+        tile.becomeFloor();
+    }
+
+    /**
+     * Make the door a floor tile
+     * @param {int} tileRow 
+     * @param {int} tileCol 
+     */
+    openDoor(tile) {
+        tile.becomeFloor();
+    }
 }

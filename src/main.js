@@ -85,6 +85,8 @@ function update() {
         document.getElementById('debugText').innerHTML = "Player WON !";
         resetGame();
     }
+    // Number of keys
+    document.getElementById('debugText').innerHTML = "Number of keys: " + player.keysHeld;
 }
 
 /**

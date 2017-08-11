@@ -3,67 +3,21 @@
  */
 class Warrior {
 
-    constructor(x, y, graphics, radius = PLAYER_RADIUS) {
+    constructor(x, y, graphics) {
         this.x = x;
         this.y = y;
         this.nextX = x;
         this.nextY = y;
-        this.radius = radius;
         // Load player image
         this.pic = graphics.get('warrior');
+        // Keys
+        this.keysHeld = 0;
     }
 
     /**
-     * Update
-     * @param {*} canvas 
+     * Update player
      * @param {*} input 
-     * @param {*} tiles 
-     */
-    update(canvas, input, tiles) {
-        // Input controls
-        if (input.isUpInput(this)) {
-            this.nextY = this.y - PLAYER_MOVE_SPEED;
-        }
-        if (input.isDownInput(this)) {
-            this.nextY = this.y + PLAYER_MOVE_SPEED;
-        }
-        if (input.isLeftInput(this)) {
-            this.nextX = this.x - PLAYER_MOVE_SPEED;
-        }
-        if (input.isRightInput(this)) {
-            this.nextX = this.x + PLAYER_MOVE_SPEED;
-        }
-        if(this.isCollidingWall(tiles) || this.isGettingOut()) {
-            this.stop();
-        } else {
-            this.move();
-        }
-    }
-
-    /**
-     * True when warrior is colliding with wall
-     */
-    isCollidingWall(tiles) {
-        // Get player's next position
-        let nextTileRow = Math.floor(this.nextY / TILE_HEIGHT);
-        let nextTileCol = Math.floor(this.nextX / TILE_WIDTH);
-        // Col and row must be in config limit
-        if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
-            return true;
-        // Allowed tiles
-        let collidedTile = this.getTileFromColAndRow(nextTileRow, nextTileCol, tiles);
-        if (collidedTile.code == TILE_FLOOR_CODE || collidedTile.code == TILE_GOAL_CODE) {
-            return false;
-        }
-        // Else collision
-        return true;
-    }
-
-    /**
-     * Get tile index from row and col
-     * @param {int} tileRow 
-     * @param {int} tileCol 
-     * @param {*} tiles
+     * @param {*} world
      */
     update(input, world) {
         this.nextX = this.x;
@@ -82,11 +36,28 @@ class Warrior {
             this.nextX = this.nextX + PLAYER_MOVE_SPEED;
         }
 
+        // Pick keys on floor
+        this.collectKeys();
         // Move if movement is valid
         if (this.isMovementValid(world)) {
             this.move();
         } else {
             this.stop();
+        }
+    }
+
+    /**
+     * Handle key picking
+     */
+    collectKeys() {
+        // Get next position
+        let nextTileRow = Math.floor(this.nextY / TILE_HEIGHT);
+        let nextTileCol = Math.floor(this.nextX / TILE_WIDTH);
+        // Key collection
+        let collidedTile = world.getTileFromColAndRow(nextTileRow, nextTileCol);
+        if (collidedTile.code == TILE_KEY_CODE) {
+            this.keysHeld = this.keysHeld + 1;
+            world.collectKey(collidedTile);
         }
     }
 
@@ -100,10 +71,19 @@ class Warrior {
         // Col and row must be in config limit
         if (nextTileCol < 0 || nextTileRow < 0 || nextTileRow >= TILE_ROWS || nextTileCol >= TILE_COLS)
             return false;
-        // Collision
+        // Wall collision
         let collidedTile = world.getTileFromColAndRow(nextTileRow, nextTileCol);
         if (collidedTile.code == TILE_WALL_CODE) {
             return false;
+        }
+        // Door collision
+        if(collidedTile.code == TILE_DOOR_CODE) {
+            if(this.keysHeld <= 0) {
+                return false;
+            } else {
+                this.keysHeld = this.keysHeld - 1;
+                world.openDoor(collidedTile);
+            }
         }
         return true;
     }
@@ -137,5 +117,6 @@ class Warrior {
     reset(startX, startY) {
         this.x = startX;
         this.y = startY;
+        this.keysHeld = 0;
     }
 }

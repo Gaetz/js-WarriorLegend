@@ -4,16 +4,11 @@
 
 // General game config
 const FRAME_PER_SECOND = 30;
-const ANGLE_MULTIPLICATOR = 5;
 
 // Warrior
 const START_X_OFFSET = 18;
 const START_SPEED = 0;
-const START_ANGLE = - Math.PI / 2;
-const PLAYER_RADIUS = 10;
-const PLAYER_MOVE_SPEED = 3.0;
-const GROUNDSPEED_DECAY_MULT = 0.94;
-const BOUNCE_TIMER = 15;
+const PLAYER_MOVE_SPEED = 5.0;
 const PLAYER_GRAPHICS = 'images/warrior.png';
 
 // Tiles
